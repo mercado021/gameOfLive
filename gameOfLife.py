@@ -9,7 +9,7 @@ screen = pygame.display.set_mode((height, width))
 
 bg = 25, 25, 25 #color
 screen.fill(bg)# Pinta la pantalla del color de la variable bg
-nCy, nCx = 60,60
+nCy, nCx = 70,70
 
 anchuraC = width / nCx
 alturaC = height / nCy
@@ -33,32 +33,34 @@ gameState[8,9] = 1
 
 #variable para el control del flujo de ejecución
 pauseExect = False
-while True:
-#    pass
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT: sys.exit()
 
-    time.sleep(0.01)
+contador = 0
+while True:
+   # time.sleep(0.1)
+#bucle Principal del juego
+         
     newGameState = np.copy(gameState)
     screen.fill(bg)
-   
+  
+   #obtengo eventos antes de pintar la rejilla para un nuevo estado 
     ev = pygame.event.get()
     for event in ev:
         mouseClick = pygame.mouse.get_pressed()
         if event.type == pygame.KEYDOWN:
             pauseExect = not pauseExect
-            
+            contador=contador+1
+            print(contador)
         if sum(mouseClick) > 0: 
             posX, posY = pygame.mouse.get_pos()
             celX, celY = int(np.floor(posX / anchuraC)), int(np.floor(posY / alturaC))
             newGameState[celX, celY] = not mouseClick[2]
+            print("click")
 
-        
-
+       
     for y in range(0,nCy):
         for x in range(0,nCx):
             if not pauseExect:
-                #Calculamos el número de vecinos cercanos
+            #Calculamos el número de vecinos cercanos
                 n_neigh = gameState[(x - 1) % nCx, (y - 1) % nCy] + \
                         gameState[(x + 1) % nCx, (y - 1) % nCy] + \
                         gameState[(x + 1) % nCx, (y + 1) % nCy] + \
@@ -73,8 +75,9 @@ while True:
                     newGameState[x,y] = 1
                 #Regla 2: Una Célula viva con menos de 2 o con mas de 3 vecinas vivas "Muere"
                 elif gameState[x,y] == 1 and (n_neigh < 2 or n_neigh > 3):
+                #elif gameState[x,y] == 1 and (n_neigh != 4):
                     newGameState[x,y] = 0
-            #Se crea el tablero
+                #Se crea el tablero
             poly = [((x)    * anchuraC,  y * alturaC),
                     ((x+1)  * anchuraC, y * alturaC),
                     ((x+1)  * anchuraC, (y+1) * alturaC),
