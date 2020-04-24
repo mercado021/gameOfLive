@@ -28,6 +28,8 @@ gameState[22,23] = 1
 gameState[21,23] = 1
 gameState[20,23] = 1
 gameState[8,8] = 1
+gameState[8,7] = 1
+gameState[8,9] = 1
 
 #variable para el control del flujo de ejecución
 pauseExect = False
